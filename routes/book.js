@@ -13,7 +13,6 @@ router.post("/new", function (req, res, next) {
 });
 
 // find all books
-// "naresh"
 router.get("/", (req, res, next) => {
   Book.find({}, (err, allbooks) => {
     if (err) {
