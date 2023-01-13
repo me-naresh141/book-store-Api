@@ -13,13 +13,10 @@ router.post("/:id", (req, res, next) => {
       { $push: { comments: comment._id } },
       (err, book) => {
         if (err) return next(err);
-        Book.findById(id)
-          .populate("comments")
-          .exec((err, book) => {
-            if (err) return next(err);
-            console.log(book);
-            res.send(book);
-          });
+        Book.findById(id, (err, book) => {
+          if (err) return next(err);
+          res.send(book);
+        });
       }
     );
   });

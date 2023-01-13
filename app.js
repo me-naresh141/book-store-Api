@@ -29,14 +29,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/v2", indexRouter);
-app.use("/api/v2/users", usersRouter);
-app.use("/api/v2/books", bookRouter);
-app.use("/api/v2/comment", commentRouter);
-
-// hello
-// helllo
-
+app.use("/api/v3", indexRouter);
+app.use("/api/v3/users", usersRouter);
+app.use("/api/v3/books", bookRouter);
+app.use("/api/v3/comment", commentRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
