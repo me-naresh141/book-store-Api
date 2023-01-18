@@ -10,13 +10,13 @@ var usersRouter = require("./routes/users");
 var bookRouter = require("./routes/book");
 var commentRouter = require("./routes/comment");
 const { clear } = require("console");
-
+require("dotenv").config();
 var app = express();
 
 // connect database
 mongoose.set("strictQuery", true);
 mongoose.connect("mongodb://127.0.0.1/book-store-api", (err, book) => {
-  console.log(err ? err : `sucessfully connected`);
+  console.log(err ? err : `sucessfully connected👍👍👍`);
 });
 
 // view engine setup
@@ -29,10 +29,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/api/v3", indexRouter);
-app.use("/api/v3/users", usersRouter);
-app.use("/api/v3/books", bookRouter);
-app.use("/api/v3/comment", commentRouter);
+app.use("/api/v4", indexRouter);
+app.use("/api/v4/users", usersRouter);
+app.use("/api/v4/books", bookRouter);
+app.use("/api/v4/comment", commentRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

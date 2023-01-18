@@ -1,11 +1,12 @@
 const { json } = require("express");
 var express = require("express");
 const { response } = require("../app");
+let auth = require("../middelwares/auth");
 var router = express.Router();
 var Book = require("../models/book");
 
 // create new book
-router.post("/new", async (req, res, next) => {
+router.post("/new", auth.verifyToken, async (req, res, next) => {
   try {
     let newBook = await Book.create(req.body);
     console.log(newBook);
@@ -16,7 +17,7 @@ router.post("/new", async (req, res, next) => {
 });
 
 // find all books
-router.get("/", (req, res, next) => {
+router.get("/", auth.verifyToken, (req, res, next) => {
   Book.find({}, (err, allbooks) => {
     if (err) {
       res.send(err.message);
@@ -26,7 +27,7 @@ router.get("/", (req, res, next) => {
 });
 
 // get singal book
-router.get("/:id", (req, res, next) => {
+router.get("/:id", auth.verifyToken, (req, res, next) => {
   Book.findById(req.params.id, (err, singalbook) => {
     if (err) {
       res.send(err.message);
@@ -36,7 +37,7 @@ router.get("/:id", (req, res, next) => {
 });
 
 // update a book
-router.put("/:id", (req, res, next) => {
+router.put("/:id", auth.verifyToken, (req, res, next) => {
   Book.findByIdAndUpdate(
     req.params.id,
     req.body,
@@ -52,7 +53,7 @@ router.put("/:id", (req, res, next) => {
 
 // delete book
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", auth.verifyToken, (req, res, next) => {
   Book.findByIdAndDelete(req.params.id, (err, deletebook) => {
     if (err) {
       res.send(err.message);
@@ -62,7 +63,7 @@ router.delete("/:id", (req, res, next) => {
 });
 
 // edit category
-router.put("/:id/editCategory", async (req, res, next) => {
+router.put("/:id/editCategory", auth.verifyToken, async (req, res, next) => {
   try {
     let editCategoryBook = await Book.findByIdAndUpdate(
       req.params.id,
@@ -75,7 +76,7 @@ router.put("/:id/editCategory", async (req, res, next) => {
 });
 
 // delete category
-router.delete("/:category/delete", async (req, res, next) => {
+router.delete("/:category/delete", auth.verifyToken, async (req, res, next) => {
   try {
     let deletbook = await Book.deleteMany(req.body);
     res.send(deletbook);
@@ -85,7 +86,7 @@ router.delete("/:category/delete", async (req, res, next) => {
 });
 
 // list all categories
-router.get("/category/category", async (req, res, next) => {
+router.get("/category/category", auth.verifyToken, async (req, res, next) => {
   try {
     let catgory = [];
     let allCategory = await Book.find({});
@@ -99,7 +100,7 @@ router.get("/category/category", async (req, res, next) => {
 });
 
 // count books for each category
-router.get("/:category/count", async (req, res, next) => {
+router.get("/:category/count", auth.verifyToken, async (req, res, next) => {
   try {
     let totalBook = await Book.find(req.params);
     res.send({ count: totalBook.length });
@@ -108,7 +109,7 @@ router.get("/:category/count", async (req, res, next) => {
   }
 });
 // list books by author
-router.get("/:author/author", async (req, res, next) => {
+router.get("/:author/author", auth.verifyToken, async (req, res, next) => {
   try {
     let books = await Book.find(req.params);
     res.send(books);
@@ -118,7 +119,7 @@ router.get("/:author/author", async (req, res, next) => {
 });
 
 // list all tags
-router.get("/tag", (req, res, next) => {
+router.get("/tag", auth.verifyToken, (req, res, next) => {
   Book.find({}, (err, book) => {
     book.forEach((b) => {
       console.log(b.tags);

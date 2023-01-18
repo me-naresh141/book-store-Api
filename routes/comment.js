@@ -1,9 +1,10 @@
 let express = require("express");
 let router = express.Router();
+let auth = require("../middelwares/auth");
 let Book = require("../models/book");
 let Comment = require("../models/comment");
 
-router.post("/:id", (req, res, next) => {
+router.post("/:id", auth.verifyToken, (req, res, next) => {
   let id = req.params.id;
   req.body.bookId = id;
   Comment.create(req.body, (err, comment) => {
@@ -22,7 +23,7 @@ router.post("/:id", (req, res, next) => {
   });
 });
 // update comment
-router.post("/:id/edit", (req, res, next) => {
+router.post("/:id/edit", auth.verifyToken, (req, res, next) => {
   let id = req.params.id;
   Comment.findByIdAndUpdate(id, req.body, { new: true }, (err, comment) => {
     if (err) return next(err);
@@ -36,7 +37,7 @@ router.post("/:id/edit", (req, res, next) => {
 });
 
 // delete comment
-router.get("/:id/delete", (req, res, next) => {
+router.get("/:id/delete", auth.verifyToken, (req, res, next) => {
   let id = req.params.id;
   Comment.findByIdAndDelete(id, (err, comment) => {
     if (err) return next(err);

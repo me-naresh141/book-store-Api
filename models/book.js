@@ -8,6 +8,8 @@ let bookSchema = new Schema({
   category: { type: String, required: true },
   author: { type: String },
   tags: [{ type: String }],
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
 });
 
 module.exports = mongoose.model("Book", bookSchema);
